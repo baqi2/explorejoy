@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅游网站 - 首页</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2A5CAA;
+            --secondary-blue: #E3F2FD;
+            --accent-blue: #66A6FF;
+            --dark-bg: #1A2533;
+            --text-dark: #2D3436;
+            
+            /* 响应式字体大小变量 */
+            --font-size-base: 14px;
+            --font-size-title-large: 16px;
+            --font-size-title-medium: 14px;
+            --font-size-title-small: 12px bold;
+            --font-size-text-large: 12px bold;
+            --font-size-text-medium: 12px bold;
+            --font-size-text-small: 10px bold;
+            --font-size-nav: 12px;
+            --line-height-base: 1.5;
+        }
+
+        body {
+            background: #f8f9fa;
+            font-size: var(--font-size-base);
+            font-family: Arial, sans-serif;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: var(--dark-bg);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            height: 50px;
+            top: 0px;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: var(--font-size-nav);
+            font-weight: normal;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        .search-box button {
+            font-size: var(--font-size-nav);
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* 页面标题和总览区域 */
+        .site-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 2rem 5%;
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .site-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .site-description {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* 旅游项目网格 */
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tour-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .tour-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .tour-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem;
+        }
+
+        .tour-title {
+            font-size: 18px;
+            margin-bottom: 0.5rem;
+        }
+
+        .tour-overview {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .tour-content {
+            padding: 1rem;
+        }
+
+        .city-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .city-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .highlights-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .highlights-list li {
+            padding: 0.3rem 0;
+            font-size: 14px;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .highlights-list li:before {
+            content: '•';
+            color: var(--accent-blue);
+            position: absolute;
+            left: 0.5rem;
+        }
+
+        .tour-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 150px);
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tour-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .tour-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            background: var(--accent-blue);
+            color: white;
+            padding: 0.8rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .tour-link:hover {
+            background: var(--primary-blue);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .tours-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tour-images {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(3, 120px);
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tour-card {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .tour-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .tour-card:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .tour-card:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="src/BjSxCltr11Ds.html">京晋古迹游</a>
+            <a href="src/BjDlLcShllDscr13Ds.html">京滇之旅</a>
+            <a href="src/BjSzHzSh12Ds.html">京沪江南游</a>
+            <a href="src/BjXaCdShCls13Ds.html">华夏四城游</a>
+        </div>
+        <div class="search-box">
+            <button>语言选择</button>
+        </div>
+    </nav>
+    
+    <!-- 网站标题和描述 -->
+    <header class="site-header">
+        <h1 class="site-title">探索世界的美好旅程</h1>
+        <p class="site-description">我们精心设计的旅游路线，带您领略中国历史文化与自然风光的完美结合，开启一场难忘的旅行体验。</p>
+    </header>
+
+    <!-- 旅游项目网格 -->
+    <div class="tours-grid" id="tours-container">
+        <!-- 旅游项目卡片将通过JavaScript动态生成 -->
+    </div>
+
+    <script>
+        // 旅游项目数据
+        const tourProjects = [
+            {
+                id: 'BjSxCltr11Ds',
+                title: '北京山西文化古迹11天深度游',
+                overview: '本次精心规划的11天行程，带您体验首都北京的同时，将带您深度体验华夏文明摇篮之一的山西省。通过串联北京、大同、平遥、太原四座历史文化古迹名城，为您开启一场融合历史文化与文物古迹的非凡之旅。',
+                imgSrc: 'resources/20250403+huaxiawenhuaguji11tianlvxingfangan(xin)'
+            },
+            {
+                id: 'BjDlLcShllDscr13Ds',
+                title: '发现北京探秘云南12天深度游行方案',
+                overview: '本次精心规划的12天深度旅行，使您一次旅行，双倍体验！既能感受首都北京的厚重历史，又能体悟到自然与人文交织的云南。通过串联起北京、大理、临沧、丽江、香格里拉，为您开启一场融合历史文化、自然风光、佛教文化、茶文化、民俗风情相融合的非凡之旅。',
+                imgSrc: 'resources/20250403+beijingyunnan12tianlvxingfangan+'
+            },
+            {
+                id: 'BjSzHzSh12Ds',
+                title: '北京苏州杭州上海12天深度游',
+                overview: '本次精心规划的12天深度旅行，串联起首都北京与三座各具魅力的江浙名城—苏州、杭州、上海。线路兼具古都北京与江浙名城，为您开启一场融合历史文化、自然风光、民俗风情与现代魅力的非凡之旅。',
+                imgSrc: 'resources/20250403+beijingsuzhouhangzhoushanghai12tianlvxingfangan+'
+            },
+            {
+                id: 'BjXaCdShCls13Ds',
+                title: '华夏经典13天深度游',
+                overview: '本次精心规划的13天深度旅行，串联起北京、西安、成都、上海四座风格迥异、各具特色的华夏名城，为您开启一场融合历史文化、自然风光、民俗风情与现代魅力的非凡之旅。',
+                imgSrc: 'resources/20250403+huaxiasicheng+13+tianshenduyoulvxingfangan_cn'
+            }
+        ];
+
+        // 初始化页面
+        async function initPage() {
+            const toursContainer = document.getElementById('tours-container');
+            
+            // 清空容器
+            toursContainer.innerHTML = '';
+            
+            // 为每个旅游项目创建卡片
+            for (const tour of tourProjects) {
+                try {
+                    // 获取项目详细数据
+                    const response = await fetch(`src/${tour.id}.json`);
+                    if (!response.ok) throw new Error(`无法加载${tour.id}的数据`);
+                    const tourData = await response.json();
+                    
+                    // 创建项目卡片
+                    const tourCard = document.createElement('div');
+                    tourCard.className = 'tour-card';
+                    
+                    // 卡片头部
+                    const tourHeader = document.createElement('div');
+                    tourHeader.className = 'tour-header';
+                    tourHeader.innerHTML = `
+                        <h2 class="tour-title">${tourData.pageTitle}</h2>
+                        <p class="tour-overview">${tourData.overview}</p>
+                    `;
+                    
+                    // 卡片内容
+                    const tourContent = document.createElement('div');
+                    tourContent.className = 'tour-content';
+                    
+                    // 城市亮点
+                    let cityHighlightsHTML = '';
+                    // 最多显示3个城市
+                    const citiesToShow = tourData.cityHighlights.slice(0, 3);
+                    
+                    citiesToShow.forEach(city => {
+                        let highlightsHTML = '';
+                        // 每个城市最多显示3个亮点
+                        const highlightsToShow = city.highlights.slice(0, 3);
+                        
+                        highlightsToShow.forEach(highlight => {
+                            highlightsHTML += `<li>${highlight}</li>`;
+                        });
+                        
+                        cityHighlightsHTML += `
+                            <div class="city-section">
+                                <h3 class="city-name">${city.city}</h3>
+                                <ul class="highlights-list">
+                                    ${highlightsHTML}
+                                </ul>
+                            </div>
+                        `;
+                    });
+                    
+                    // 图片展示
+                    let imagesHTML = '';
+                    // 为每个项目选择6张图片
+                    for (let i = 1; i <= 6; i++) {
+                        imagesHTML += `
+                            <img src="${tour.imgSrc}_image_${i}.png" alt="${tourData.pageTitle}图片${i}" class="tour-image">
+                        `;
+                    }
+                    
+                    // 组装内容
+                    tourContent.innerHTML = `
+                        ${cityHighlightsHTML}
+                        <div class="tour-images">
+                            ${imagesHTML}
+                        </div>
+                        <a href="src/${tour.id}.html" class="tour-link">查看详细行程</a>
+                    `;
+                    
+                    // 将头部和内容添加到卡片
+                    tourCard.appendChild(tourHeader);
+                    tourCard.appendChild(tourContent);
+                    
+                    // 将卡片添加到容器
+                    toursContainer.appendChild(tourCard);
+                    
+                } catch (error) {
+                    console.error(`加载${tour.id}数据失败:`, error);
+                }
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>

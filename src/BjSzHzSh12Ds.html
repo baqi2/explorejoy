@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">page-title</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            /* padding: 0; */
+            box-sizing: border-box;
+            /* font-family: 'Roboto', Arial, sans-serif; */
+        }
+
+        :root {
+            --primary-blue: #2A5CAA;
+            --secondary-blue: #E3F2FD;
+            --accent-blue: #66A6FF;
+            --dark-bg: #1A2533;
+            --text-dark: #2D3436;
+            
+            /* 响应式字体大小变量 */
+            --font-size-base: 14px;
+            --font-size-title-large: 16px;
+            --font-size-title-medium: 14px;
+            --font-size-title-small: 12px bold;
+            --font-size-text-large: 12px bold;
+            --font-size-text-medium: 12px bold;
+            --font-size-text-small: 10px bold;
+            --font-size-nav: 12 px;
+            --line-height-base: 1.5;
+        }
+
+        body {
+            background: #f8f9fa;
+            font-size: var(--font-size-base);
+            /* line-height: var(--line-height-base); */
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: var(--dark-bg);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            height: 50px;
+            top: 0px;
+            z-index: 1000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: var(--font-size-nav);
+            font-weight: normal;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        .search-box button {
+            font-size: var(--font-size-nav);
+        }
+
+        /* 页面标题和总览区域 */
+        .tour-overview {
+            background: var(--primary-blue);
+            color: white;
+            padding: 2%;
+            position: fixed;
+            top: var(--nav-height);
+            z-index: 1000;
+            width: 100%;
+            /* box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column; 
+            gap: 1rem;*/
+        }
+        
+        .tour-overview-title {
+            font-size: var(--font-size-title-large);
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        
+        .tour-overview-context {
+            font-size: var(--font-size-text-large);
+            opacity: 0.9;
+        }
+        
+        /* 主内容区 */
+        .main-container {
+            margin-top: var(--header-total-height);
+            display: flex;
+            height: auto;
+        }
+
+        /* 左侧导航 */
+        .timeline-nav {
+            width: 30%;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 2rem;
+            color: var(--text-dark);
+            overflow-y: auto; 
+            /* scrollbar-width: none; */
+            height: calc(100vh - 160px);
+            /* margin-top: auto; */
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            backdrop-filter: blur(5px);
+            border-right: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .day-card {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--accent-blue);
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--text-dark);
+            font-size: var(--font-size-text-medium);
+        }
+
+        .day-card.active {
+            background: rgba(255,255,255,0.1);
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .day-number {
+            font-size: var(--font-size-title-medium);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .day-card h3 {
+            font-size: var(--font-size-title-small);
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .day-card p {
+            font-size: var(--font-size-text-large);
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* 右侧内容 */
+        .content-detail {
+            /* margin-top: auto; */
+            flex: 1;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            overflow-y: auto; 
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            border-radius: 8px 0 0 0;
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+            height: calc(100vh - 160px); 
+        }
+        
+        .timeline-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            padding-right: 1rem;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--accent-blue);
+        }
+        
+        .timeline-item:last-child::before {
+            bottom: calc(100% - 24px);
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+        }
+        
+        .timeline-item-title {
+            font-weight: bold;
+            font-size: var(--font-size-text-large);
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        .timeline-item-title::after {
+            content: '▼';
+            font-size: calc(var(--font-size-text-medium) * 0.8);
+            margin-left: 0.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .timeline-item-title.collapsed::after {
+            transform: rotate(-90deg);
+        }
+        
+        .timeline-item-detail {
+            padding: 0.5rem 0;
+            border-left: 2px solid var(--secondary-blue);
+            padding-left: 1rem;
+            margin: 0.5rem 0 0.5rem 0.5rem;
+            font-size: var(--font-size-text-medium);
+            line-height: var(--line-height-base);
+            color: #555;
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.5s, opacity 0.3s;
+            opacity: 1;
+        }
+        
+        .timeline-item-detail.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding: 0;
+            margin: 0;
+            border-left: none;
+        }
+        
+        .gallery-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            /* padding-top: 1rem; */
+        }
+
+        .itinerary-section {
+            margin-bottom: 3rem;
+            display: none;
+            width: 100%;
+        }
+
+        .itinerary-section.active {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .itinerary-section h2 {
+            width: 100%;
+            margin-bottom: 1.5rem;
+            font-size: var(--font-size-title-medium);
+        }
+
+        .timeline-column h3{
+            font-size: var(--font-size-title-small);
+            font-weight: bold;
+        }
+
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .gallery-img {
+            max-width: 350px;
+            width: 100%;
+            height: 200px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 响应式设计 */
+        /* 大屏幕设备 (1200px以上) */
+        @media (min-width: 1200px) {
+            :root {
+                --font-size-base: 14px;
+                --font-size-title-large: 2.0rem;  /* 控制h1 */
+                --font-size-title-medium: 1.5rem; /* 控制h2 */
+                --font-size-title-small: 1.2rem;
+                --font-size-text-large: 1.0rem;  /* 控制p */
+                --font-size-text-medium: 0.9rem;
+                --font-size-text-small: 0.8rem;
+                --font-size-nav: 1rem; /* 1rem=16px */
+            }
+        }
+        
+        /* 平板设备 (768px到1199px) */
+        @media (min-width: 768px) and (max-width: 1199px) {
+            :root {
+                --font-size-base: 12px;
+                --font-size-title-large: 1.8rem;
+                --font-size-title-medium: 1.2rem;
+                --font-size-title-small: 1.0rem;
+                --font-size-text-large: 0.9rem;
+                --font-size-text-medium: 0.8rem;
+                --font-size-text-small: 0.7rem;
+                --font-size-nav: 0.85rem;
+            }
+        }
+        
+        /* 手机设备 (767px以下) */
+        @media (max-width: 767px) {
+            :root {
+                --font-size-base: 10px;
+                --font-size-title-large: 1.6rem;
+                --font-size-title-medium: 1.0rem;
+                --font-size-title-small: 0.9rem;
+                --font-size-text-large: 0.8rem;
+                --font-size-text-medium: 0.7rem;
+                --font-size-text-small: 0.6rem;
+                --font-size-nav: 0.85rem;
+            }
+            
+            .main-container {
+                flex-direction: column;
+                /* height: auto; */
+            }
+
+            .timeline-nav {
+                width: 100%;
+                padding: 1rem;
+                overflow-y: auto; 
+                /* scrollbar-width: none; */
+                display: flex;
+                height: auto;
+                position: static;
+                top: var(--header-total-height);
+            }
+
+            .day-card {
+                min-width: 200px;
+            }
+
+            .nav-links {
+                display: flex;
+            }
+            
+            .content-detail {
+                flex-direction: column;
+                padding: 1rem;
+                height: auto; /* 改为自适应 */
+                min-height: calc(100vh - 200px); /* 保留最小高度 */
+                /*overflow-y: visible; 允许内容溢出 */
+            }
+            
+            .gallery-column {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .gallery-img {
+                height: 150px;
+                max-width: 100%;
+            }
+            
+            .tour-overview {
+                padding: 1rem;
+            }
+
+            .content-detail {
+                height: auto; /* 改为自适应 */
+                top: var(--timelinenav-height);
+
+            }
+        }
+        
+        /* 小型手机设备 (480px以下) */
+        @media (max-width: 480px) {
+            :root {
+                --font-size-base: 8px;
+                --font-size-title-large: 1.2rem;
+                --font-size-title-medium: 0.9rem;
+                --font-size-title-small: 0.8rem;
+                --font-size-text-large: 0.85rem;
+                --font-size-text-medium: 0.75rem;
+                --font-size-text-small: 0.65rem;
+                --font-size-nav: 0.8rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .search-box input {
+                padding: 0.4rem 0.8rem;
+            }
+
+            .timeline-nav {
+                height: auto; /* 左侧导航高度自适应 */
+                overflow-x: invisible;
+            }
+
+            .content-detail {
+                height: auto; /* 改为自适应 */
+                min-height: calc(200vh - 160px); /* 保留最小高度 */
+                /*overflow-y: visible;  允许内容溢出 */
+                top: var(--timelinenav-height);
+
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="../index.html">首页</a>
+            <a href="BjSxCltr11Ds.html">京晋古迹游</a>
+            <a href="BjDlLcShllDscr13Ds.html">京滇之旅</a>
+            <a href="BjSzHzSh12Ds.html">京沪江南游</a>
+            <a href="BjXaCdShCls13Ds.html">华夏四城游</a>
+        </div>
+        <div class="search-box">
+            <!-- <input type="text" placeholder="搜索旅游项目..."> -->
+            <button>语言选择</button>
+        </div>
+    </nav>
+    
+    <!-- 页面标题和总览区域 -->
+    <div class="tour-overview">
+        <div>
+            <h1 class="tour-overview-title" id="overview-title">旅游项目</h1>
+            <p class="tour-overview-context" id="overview-context">行程概览</p>
+        </div>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="main-container">
+        <!-- 左侧导航 -->
+        <div class="timeline-nav"></div>
+
+        <!-- 右侧内容 -->
+        <div class="content-detail"></div>
+    </div>
+
+    <script>
+        // 初始化页面内容
+        async function initPage() {
+            try {
+                const currentFileName = window.location.pathname.split('/').pop().replace('.html', '');
+                const response = await fetch(`${currentFileName}.json`);
+                if (!response.ok) throw new Error('网络请求异常');
+                const itineraryData = await response.json();
+
+                const navContainer = document.querySelector('.timeline-nav');
+                const contentContainer = document.querySelector('.content-detail');
+                
+                // 设置页面标题
+                document.getElementById('page-title').textContent = itineraryData.pageTitle;
+                document.getElementById('overview-title').textContent = itineraryData.pageTitle;
+                document.title = itineraryData.pageTitle;
+
+                // 设置行程概览
+                document.getElementById('overview-title').textContent = itineraryData.pageTitle;
+                document.getElementById('overview-context').textContent = itineraryData.overview;
+                
+
+                // 生成导航和内容
+                itineraryData.days.forEach(day => {
+                    // 导航项
+                    const navItem = document.createElement('div');
+                    navItem.className = 'day-card';
+                    navItem.dataset.day = day.day;
+                    navItem.innerHTML = `
+                        <div class="day-number">Day ${day.day}</div>
+                        <h3>${day.title}</h3>
+                        <p>${day.subtitle}</p>
+                    `;
+                    navContainer.appendChild(navItem);
+
+                    // 创建内容容器
+                    const contentItem = document.createElement('div');
+                    contentItem.className = 'itinerary-section';
+                    contentItem.dataset.day = day.day;
+                    
+                    // 添加标题
+                    const titleElement = document.createElement('h2');
+                    titleElement.textContent = `第${day.day}天 · ${day.title}`;
+                    contentItem.appendChild(titleElement);
+                    
+                    // 创建时间线列
+                    const timelineColumn = document.createElement('div');
+                    timelineColumn.className = 'timeline-column';
+                    timelineColumn.innerHTML = `
+                        <h3>行程安排</h3>
+                        ${day.schedule.map((item, index) => `
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <p class="timeline-item-title${index >= 0 ? '' : ' collapsed'}">${item}</p>
+                                <div class="timeline-item-detail${index >= 0 ? '' : ' collapsed'}">
+                                    ${day.detailInfo && day.detailInfo[index] ? day.detailInfo[index] : '暂无详细信息'}
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                    contentItem.appendChild(timelineColumn);
+                    
+                    // 创建图片列
+                    if (day.images.length) {
+                        const galleryColumn = document.createElement('div');
+                        galleryColumn.className = 'gallery-column';
+                        galleryColumn.innerHTML = `
+                            ${day.images.map(img => `
+                                <img 
+                                    src="${itineraryData.imgSrc}_${img.replace(/\.(jpeg|jpg)$/i, '.png')}"
+                                    alt="${day.title}" 
+                                    class="gallery-img"
+                                    loading="lazy"
+                                    onerror="this.onerror=null; this.src='${itineraryData.imgSrc}+_${img}';"
+                                >
+                            `).join('')}
+                        `;
+                        contentItem.appendChild(galleryColumn);
+                    }
+                    contentContainer.appendChild(contentItem);
+                });
+
+                // 设置默认激活第一天
+                document.querySelector('.day-card').classList.add('active');
+                document.querySelector('.itinerary-section').classList.add('active');
+
+                // 添加交互事件
+                document.addEventListener('click', function(e) {
+                    // 处理左侧导航点击
+                    if (e.target.closest('.day-card')) {
+                        const targetDay = e.target.closest('.day-card').dataset.day;
+                        updateActiveDay(targetDay);
+                    }
+                    
+                    // 处理时间线项目点击展开/收起详情
+                    if (e.target.closest('.timeline-item-title')) {
+                        const titleElement = e.target.closest('.timeline-item-title');
+                        const detailElement = titleElement.nextElementSibling;
+                        
+                        // 切换展开/收起状态
+                        titleElement.classList.toggle('collapsed');
+                        detailElement.classList.toggle('collapsed');
+                    }
+                });
+                
+                // 更新活动日期的函数
+                function updateActiveDay(targetDay) {
+                    // 更新导航状态
+                    document.querySelectorAll('.day-card').forEach(card => {
+                        card.classList.remove('active');
+                    });
+                    document.querySelector(`.day-card[data-day="${targetDay}"]`).classList.add('active');
+            
+                    // 更新内容显示
+                    document.querySelectorAll('.itinerary-section').forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    document.querySelector(`.itinerary-section[data-day="${targetDay}"]`).classList.add('active');
+                    
+                    // 将内容区域滚动条重置到顶部
+                    document.querySelector('.content-detail').scrollTop = 0;
+                    
+                    // 自动滚动到选中的导航项
+                    scrollToActiveCard(document.querySelector(`.day-card[data-day="${targetDay}"]`));
+                }
+
+                // 移动端触摸滑动支持
+                let touchStartX = 0;
+                navContainer.addEventListener('touchstart', e => {
+                    touchStartX = e.touches[0].clientX;
+                }, false);
+
+                navContainer.addEventListener('touchend', e => {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const diffX = touchStartX - touchEndX;
+                    
+                    if (Math.abs(diffX) > 50) {
+                        const currentDay = parseInt(document.querySelector('.day-card.active').dataset.day);
+                        const newDay = diffX > 0 ? 
+                            Math.min(12, currentDay + 1) : 
+                            Math.max(1, currentDay - 1);
+                            
+                        document.querySelector(`.day-card[data-day="${newDay}"]`).click();
+                    }
+                }, false);
+            
+            } catch (error) {
+                console.error('加载行程数据失败:', error);
+                alert('无法加载行程数据，请刷新页面重试');
+                }
+        }
+
+        // 动态调整页面布局
+        function adjustLayout() {
+            // 动态设置导航栏高度 
+            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            document.documentElement.style.setProperty('--nav-height', `${navbarHeight}px`);
+
+            // 计算导航+概览总高度
+            const tourOverview = document.querySelector('.tour-overview');
+            //tourOverview.style.Top = `${navbarHeight}px`;
+            const headerTotalHeight = tourOverview.offsetHeight + navbarHeight;
+            document.documentElement.style.setProperty('--header-total-height', `${headerTotalHeight}px`);
+            // 动态设置主容器间距
+            //document.querySelector('.main-container').style.marginTop = `${headerTotalHeight}px`;
+                 
+            // 动态设置概览区域宽度与导航栏对齐
+            tourOverview.style.paddingLeft = 
+                document.querySelector('.navbar').style.paddingLeft;
+            tourOverview.style.paddingRight = 
+                document.querySelector('.navbar').style.paddingRight;
+
+            // 累加计算timeline-nav后的高度 var(--timelinenav-height)
+            const timelineNavbarHeight = headerTotalHeight+document.querySelector('.timeline-nav').offsetHeight;
+            document.documentElement.style.setProperty('--timelinenav-height', `${timelineNavbarHeight}px`);
+        }
+     
+        // 设置自动滚动功能
+        function setupAutoScroll() {
+            // 检测是否为移动端视图
+            const isMobileView = () => window.innerWidth < 768;
+            
+            // 初始滚动到当前激活的导航项
+            const activeCard = document.querySelector('.day-card.active');
+            if (activeCard) {
+                scrollToActiveCard(activeCard);
+            }
+            
+            // 监听窗口大小变化
+            window.addEventListener('resize', () => {
+                const activeCard = document.querySelector('.day-card.active');
+                if (activeCard) {
+                    scrollToActiveCard(activeCard);
+                }
+            });
+        }
+        
+        // 滚动到激活的导航项的函数
+        function scrollToActiveCard(activeCard) {
+            const nav = document.querySelector('.timeline-nav');
+            const isMobileView = window.innerWidth < 768;
+            
+            if (isMobileView) {
+                // 移动端水平滚动
+                const cardLeft = activeCard.offsetLeft;
+                const navWidth = nav.offsetWidth;
+                nav.scrollTo({
+                    left: cardLeft - (navWidth / 2) + (activeCard.offsetWidth / 2),
+                    behavior: 'smooth'
+                });
+            } else {
+                // 桌面端垂直滚动
+                const cardTop = activeCard.offsetTop;
+                const navHeight = nav.offsetHeight;
+                const cardHeight = activeCard.offsetHeight;
+                nav.scrollTo({
+                    top: cardTop - (navHeight / 2) + (cardHeight / 2),
+                    behavior: 'smooth'
+                });
+            }
+        }
+       
+        // 启动初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            initPage().then(() => {
+            setupAutoScroll();
+            adjustLayout();
+            });
+        });
+
+        // 窗口变化时调用
+        window.addEventListener('resize', adjustLayout);  
+    </script>
+</body>
+</html>
