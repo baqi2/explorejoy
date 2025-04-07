@@ -2,7 +2,9 @@
 async function loadNavbar() {
     return new Promise(async (resolve, reject) => {
         try {
-            const response = await fetch('/toursite/components/navbar.html');
+            // 使用相对路径或动态构建完整路径
+            const baseUrl = window.location.origin;
+            const response = await fetch(`${baseUrl}/components/navbar.html`);
             if (!response.ok) throw new Error('加载导航栏失败');
             const html = await response.text();
             
