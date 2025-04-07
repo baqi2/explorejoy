@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游学项目 - 汉玖国际旅游</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2A5CAA;
+            --secondary-blue: #E3F2FD;
+            --accent-blue: #66A6FF;
+            --dark-bg: #1A2533;
+            --text-dark: #2D3436;
+            
+            /* 响应式字体大小变量 */
+            --font-size-base: 14px;
+            --font-size-title-large: 16px;
+            --font-size-title-medium: 14px;
+            --font-size-title-small: 12px bold;
+            --font-size-text-large: 12px bold;
+            --font-size-text-medium: 12px bold;
+            --font-size-text-small: 10px bold;
+            --font-size-nav: 12px;
+            --line-height-base: 1.5;
+        }
+
+        body {
+            background: #f8f9fa;
+            font-size: var(--font-size-base);
+            font-family: Arial, sans-serif;
+        }
+
+
+        .study-container {
+            max-width: 1200px;
+            margin: 80px auto 0;
+            padding: 2rem 5%;
+        }
+
+        .study-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .study-title {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .study-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .program-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .program-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .program-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .program-content {
+            padding: 2rem;
+        }
+
+        .program-title {
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .program-desc {
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .program-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem;
+        }
+
+        .program-link {
+            display: inline-block;
+            background: var(--accent-blue);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            transition: background 0.3s;
+        }
+
+        .program-link:hover {
+            background: var(--primary-blue);
+        }
+
+        @media (max-width: 768px) {
+            .programs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏占位符 -->
+    <div id="navbar-placeholder"></div>
+
+    <div class="study-container">
+        <header class="study-header">
+            <h1 class="study-title">特色游学项目</h1>
+            <p class="study-subtitle">融合教育与旅行，让每次游学都成为一次难忘的成长体验</p>
+        </header>
+
+        <div class="programs-grid">
+            <article class="program-card">
+                <img src="/toursite/resources/study/culture_study.jpg" alt="文化游学" class="program-image">
+                <div class="program-content">
+                    <h2 class="program-title">传统文化游学</h2>
+                    <p class="program-desc">深入体验中国传统文化，包括书法、国画、茶艺等课程，让学员在实践中领悟传统文化的魅力。</p>
+                    <ul class="program-features">
+                        <li class="feature-item">
+                            <img src="/toursite/resources/study/duration_icon.svg" alt="时长" class="feature-icon">
+                            <span>课程时长：7-14天</span>
+                        </li>
+                        <li class="feature-item">
+                            <img src="/toursite/resources/study/age_icon.svg" alt="年龄" class="feature-icon">
+                            <span>适合年龄：12-18岁</span>
+                        </li>
+                        <li class="feature-item">
+                            <img src="/toursite/resources/study/location_icon.svg" alt="地点" class="feature-icon">
+                            <span>开课地点：北京、西安、苏州</span>
+                        </li>
+                    </ul>
+                    <a href="#" class="program-link">了解更多</a>
+                </div>
+            </article>
+
+            <article class="program-card">
+                <img src="/toursite/resources/study/history_study.jpg" alt="历史游学" class="program-image">
+                <div class="program-content">
+                    <h2 class="program-title">历史文化探索</h2>
+                    <p class="program-desc">走访历史文化名城，探访文物古迹，通过实地考察了解中国历史文化的发展脉络。</p>
+                    <ul class="program-features">
+                        <li class="feature-item">
+                            <img src="/toursite/resources/study/duration_icon.svg" alt="时长" class="feature-icon">
+                            <span>课程时长：10-15天</span>
+                        </li>
+                        <li class="feature-item">
+                            <img src="/toursite/resources/study/age_icon.svg" alt="年龄" class="feature-icon">
+                            <span>适合年龄：15-22岁</span>
+                        </li>
+                        <li class="feature-item">
+                            <img src="/toursite/resources/study/location_icon.svg" alt="地点" class="feature-icon">
+                            <span>开课地点：北京、西安、洛阳</span>
+                        </li>
+                    </ul>
+                    <a href="#" class="program-link">了解更多</a>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script src="/toursite/js/utils.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            loadNavbar();
+        });
+    </script>
+</body>
+</html>

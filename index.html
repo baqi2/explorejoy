@@ -36,48 +36,6 @@
             font-family: Arial, sans-serif;
         }
 
-        /* 导航栏 */
-        .navbar {
-            background: var(--dark-bg);
-            padding: 1rem 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;
-            width: 100%;
-            height: 50px;
-            top: 0px;
-            z-index: 1000;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: var(--font-size-nav);
-            font-weight: normal;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-blue);
-            font-weight: bold;
-        }
-
-        .search-box button {
-            font-size: var(--font-size-nav);
-            background: transparent;
-            border: 1px solid white;
-            color: white;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
         /* 页面标题和总览区域 */
         .site-header {
             background: var(--primary-blue);
@@ -239,21 +197,13 @@
             animation-delay: 0.6s;
         }
     </style>
+    
+    <!-- 添加工具函数引用 -->
+    <script src="js/utils.js"></script>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar">
-        <div class="nav-links">
-            <a href="index.html">首页</a>
-            <a href="src/BjSxCltr11Ds.html">京晋古迹游</a>
-            <a href="src/BjDlLcShllDscr13Ds.html">京滇之旅</a>
-            <a href="src/BjSzHzSh12Ds.html">京沪江南游</a>
-            <a href="src/BjXaCdShCls13Ds.html">华夏四城游</a>
-        </div>
-        <div class="search-box">
-            <button>语言选择</button>
-        </div>
-    </nav>
+    <!-- 导航栏占位符 -->
+    <div id="navbar-placeholder"></div>
     
     <!-- 网站标题和描述 -->
     <header class="site-header">
@@ -383,6 +333,13 @@
 
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', initPage);
+    </script>
+    
+    <script>
+        // 页面加载完成后初始化导航栏
+        window.addEventListener('DOMContentLoaded', () => {
+            loadNavbar();
+        });
     </script>
 </body>
 </html>
