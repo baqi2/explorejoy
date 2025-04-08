@@ -341,28 +341,65 @@
                 await loadNavbar();
                 // 等待导航栏加载完成后再初始化页面内容
                 await initPage();
+                test();
             } catch (error) {
                 console.error('页面初始化失败:', error);
             }
         });
 
-        window.addEventListener('DOMContentLoaded', function() {
-        // 检查导航栏容器
-        const placeholder = document.getElementById('navbar-placeholder');
-            console.log('导航栏占位符:', placeholder);
+        function test() {
+            // 增强版调试代码
+            console.log('===== 导航栏调试开始 =====');
+            
+            // 1. 检查导航栏容器
+            const placeholder = document.getElementById('navbar-placeholder');
+            console.log('导航栏占位符:', placeholder ? '存在' : '不存在');
             
             if(placeholder) {
-                // 检查下拉菜单元素
+                // 2. 检查导航栏HTML内容
+                console.log('导航栏HTML内容:', placeholder.innerHTML.length > 0 ? '已加载' : '空内容');
+                
+                // 3. 检查下拉菜单元素
                 const dropdowns = placeholder.querySelectorAll('.dropdown');
                 console.log('找到的下拉菜单数量:', dropdowns.length);
                 
-                // 检查事件监听
-                dropdowns.forEach(dropdown => {
+                // 4. 检查事件监听状态
+                dropdowns.forEach((dropdown, index) => {
                     const toggle = dropdown.querySelector('.dropdown-toggle');
-                    console.log('下拉按钮:', toggle);
+                    const menu = dropdown.querySelector('.dropdown-menu');
+                    
+                    console.log(`下拉菜单#${index+1}:`, {
+                        toggle: toggle ? '存在' : '缺失',
+                        menu: menu ? '存在' : '缺失',
+                        menuDisplay: menu ? getComputedStyle(menu).display : 'N/A',
+                        zIndex: menu ? getComputedStyle(menu).zIndex : 'N/A',
+                        position: menu ? getComputedStyle(menu).position : 'N/A'
+                    });
+                    
+                    // 5. 模拟点击测试
+                    if(toggle) {
+                        const clickEvent = new MouseEvent('click', {
+                            bubbles: true,
+                            cancelable: true,
+                            view: window
+                        });
+                        
+                        toggle.dispatchEvent(clickEvent);
+                        console.log(`点击后菜单状态#${index+1}:`, 
+                            menu ? getComputedStyle(menu).display : 'N/A');
+                    }
+                });
+                
+                // 6. 检查全局样式冲突
+                const navbar = document.querySelector('.navbar');
+                console.log('导航栏样式:', {
+                    zIndex: navbar ? getComputedStyle(navbar).zIndex : 'N/A',
+                    position: navbar ? getComputedStyle(navbar).position : 'N/A'
                 });
             }
-        });
+            
+            console.log('===== 导航栏调试结束 =====');
+        };
 
     </script>
 </body>
