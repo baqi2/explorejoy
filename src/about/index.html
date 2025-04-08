@@ -136,16 +136,20 @@
             }
         }
     </style>
+
+    <!-- 添加工具函数引用 -->
+    <script src="/js/utils.js"></script>
+
 </head>
 <body>
     <!-- 导航栏占位符 -->
     <div id="navbar-placeholder"></div>
 
     <div class="about-container">
-        <header class="about-header">
+        <div class="about-header">
             <h1 class="about-title">汉玖国际旅游</h1>
             <p class="about-subtitle">探索世界的美好旅程</p>
-        </header>
+        </div>
 
         <section class="company-intro">
             <div class="intro-text">
@@ -179,7 +183,6 @@
         </section>
     </div>
 
-    <script src="/js/utils.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             loadNavbar();

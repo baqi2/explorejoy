@@ -142,16 +142,20 @@
             }
         }
     </style>
+
+    <!-- 添加工具函数引用 -->
+    <script src="/js/utils.js"></script>
+
 </head>
 <body>
     <!-- 导航栏占位符 -->
     <div id="navbar-placeholder"></div>
 
     <div class="study-container">
-        <header class="study-header">
+        <div class="study-header">
             <h1 class="study-title">特色游学项目</h1>
             <p class="study-subtitle">融合教育与旅行，让每次游学都成为一次难忘的成长体验</p>
-        </header>
+        </div>
 
         <div class="programs-grid">
             <article class="program-card">
@@ -200,12 +204,10 @@
                     </ul>
                 </article>
 
-                <!-- 修改 utils.js 的路径 -->
-                <script src="../../js/utils.js"></script>
-                <script>
-                    window.addEventListener('DOMContentLoaded', () => {
-                        loadNavbar();
-                    });
-                </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            loadNavbar();
+        });
+    </script>
 </body>
 </html>
