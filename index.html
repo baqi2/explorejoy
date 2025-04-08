@@ -332,15 +332,18 @@
             }
         }
 
-        // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', initPage);
-    </script>
-    
-    <script>
-        // 页面加载完成后初始化导航栏
-        window.addEventListener('DOMContentLoaded', () => {
-            loadNavbar();
+        // 页面加载导航栏完成后初始化
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // 先加载导航栏
+                await loadNavbar();
+                // 等待导航栏加载完成后再初始化页面内容
+                await initPage();
+            } catch (error) {
+                console.error('页面初始化失败:', error);
+            }
         });
+
     </script>
 </body>
 </html>
