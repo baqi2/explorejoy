@@ -28,7 +28,6 @@
             --font-size-text-large: 12px bold;
             --font-size-text-medium: 12px bold;
             --font-size-text-small: 10px bold;
-            --font-size-nav: 12 px;
             --line-height-base: 1.5;
         }
 
@@ -45,7 +44,7 @@
             padding: 2%;
             position: fixed;
             top: var(--nav-height);
-            z-index: 1000;
+            z-index: 900;
             width: 100%;
             /* box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             display: flex;
@@ -87,7 +86,7 @@
         }
 
         .day-card {
-            padding: 1.5rem;
+            padding: 1.0rem;
             border-bottom: 1px solid var(--accent-blue);
             cursor: pointer;
             transition: all 0.3s;
@@ -280,8 +279,7 @@
                 --font-size-title-small: 1.2rem;
                 --font-size-text-large: 1.0rem;  /* 控制p */
                 --font-size-text-medium: 0.9rem;
-                --font-size-text-small: 0.8rem;
-                --font-size-nav: 1rem; /* 1rem=16px */
+                --font-size-text-small: 0.8rem; /* 1rem=16px */
             }
         }
         
@@ -295,7 +293,6 @@
                 --font-size-text-large: 0.9rem;
                 --font-size-text-medium: 0.8rem;
                 --font-size-text-small: 0.7rem;
-                --font-size-nav: 0.85rem;
             }
         }
         
@@ -309,7 +306,6 @@
                 --font-size-text-large: 0.8rem;
                 --font-size-text-medium: 0.7rem;
                 --font-size-text-small: 0.6rem;
-                --font-size-nav: 0.85rem;
             }
             
             .main-container {
@@ -330,6 +326,7 @@
 
             .day-card {
                 min-width: 200px;
+                padding: 0.3rem;
             }
            
             .content-detail {
@@ -371,7 +368,6 @@
                 --font-size-text-large: 0.85rem;
                 --font-size-text-medium: 0.75rem;
                 --font-size-text-small: 0.65rem;
-                --font-size-nav: 0.8rem;
             }
 
             .timeline-nav {

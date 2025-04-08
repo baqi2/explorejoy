@@ -1,5 +1,9 @@
 <style>
 /* 导航栏 */
+    :root {
+        --font-size-nav: 0.95rem;
+    }
+
     .navbar {
         background: var(--dark-bg);
         padding: 1rem 3%;
@@ -8,7 +12,8 @@
         align-items: center;
         position: fixed;
         width: 100%;
-        height: 50px;
+        height: auto;
+        min-height: 50px;
         top: 0px;
         z-index: 1000;
     }
@@ -33,17 +38,69 @@
         color: white;
         text-decoration: none;
         transition: color 0.3s;
-        font-size: calc(var(--font-size-nav) * 1.6); /* 调整基础字体大小为原来的2倍 */
+        font-size: calc(var(--font-size-nav) * 1.6);
         font-weight: normal;
     }
 
+    /* 下拉菜单样式 */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-toggle {
+        cursor: pointer;
+    }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #333;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+        z-index: 1001;
+        border-radius: 4px;
+        padding: 10px 0;
+        top: 100%;
+        left: 0;
+        margin-top: 0; /* 减小间距，防止鼠标移动时失去悬停 */
+    }
+
+    .dropdown-menu a {
+        color: white;
+        padding: 8px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: calc(var(--font-size-nav) * 1.4);
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #444;
+    }
+
+    /* 修改悬停逻辑，确保鼠标可以移动到下拉菜单 */
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    /* 添加一个透明的连接区域，防止鼠标移动时失去悬停 */
+    .dropdown::after {
+        content: '';
+        position: absolute;
+        height: 20px; /* 连接区域高度 */
+        width: 100%;
+        left: 0;
+        top: 100%;
+    }
+
+    /* 响应式样式保持不变 */
     @media (max-width: 1200px) {
         .nav-links {
             gap: 1.2rem;
         }
         
         .nav-links a {
-            font-size: calc(var(--font-size-nav) * 1.5); /* 在1200px以下稍微减小字体 */
+            font-size: calc(var(--font-size-nav) * 1.5);
         }
     }
 
@@ -57,7 +114,7 @@
         }
 
         .nav-links a {
-            font-size: calc(var(--font-size-nav) * 1.25); /* 在992px以下继续减小字体 */
+            font-size: calc(var(--font-size-nav) * 1.25);
         }
     }
 
@@ -75,11 +132,16 @@
         }
         
         .nav-links a {
-            font-size: calc(var(--font-size-nav) * 1.1); /* 小屏幕下保持原有大小 */
+            font-size: calc(var(--font-size-nav) * 1.1);
         }
         
         .search-box input {
             padding: 0.4rem 0.8rem;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            width: 180px;
         }
     }
 
@@ -104,10 +166,15 @@
         <img src="/resources/images/logo.png" alt="Han Joy Tour Logo" class="nav-logo">
         <div class="nav-links">
             <a href="/index.html">首页</a>
-            <a href="/src/BjSxCltr11Ds.html">京晋古迹游</a>
-            <a href="/src/BjDlLcShllDscr13Ds.html">京滇之旅</a>
-            <a href="/src/BjSzHzSh12Ds.html">京沪江南游</a>
-            <a href="/src/BjXaCdShCls13Ds.html">华夏四城游</a>
+            <div class="dropdown">
+                <a class="dropdown-toggle">旅游线路</a>
+                <div class="dropdown-menu">
+                    <a href="/src/BjSxCltr11Ds.html">京晋古迹游</a>
+                    <a href="/src/BjDlLcShllDscr13Ds.html">京滇之旅</a>
+                    <a href="/src/BjSzHzSh12Ds.html">京沪江南游</a>
+                    <a href="/src/BjXaCdShCls13Ds.html">华夏四城游</a>
+                </div>
+            </div>
             <a href="/src/study/index.html">游学项目</a>
             <a href="/src/about/index.html">关于我们</a>
         </div>
@@ -116,3 +183,43 @@
         <button>语言选择</button>
     </div>
 </nav>
+
+<script>
+// 移动设备点击触发下拉菜单
+document.addEventListener('DOMContentLoaded', function() {
+    // 检测是否为触摸设备
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (isTouchDevice) {
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                const parent = this.parentElement;
+                const menu = parent.querySelector('.dropdown-menu');
+                
+                // 切换菜单显示状态
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                } else {
+                    // 先关闭所有其他菜单
+                    document.querySelectorAll('.dropdown-menu').forEach(m => {
+                        m.style.display = 'none';
+                    });
+                    menu.style.display = 'block';
+                }
+            });
+        });
+        
+        // 点击页面其他区域关闭菜单
+        document.addEventListener('click', function(e) {
+            if (!e.target.matches('.dropdown-toggle')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
+    }
+});
+</script>

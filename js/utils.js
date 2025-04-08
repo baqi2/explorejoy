@@ -15,11 +15,35 @@ async function loadNavbar() {
                 
                 // 根据当前页面路径高亮对应的导航链接
                 const currentPath = window.location.pathname;
-                const navLinks = navbarPlaceholder.querySelectorAll('.nav-links a');
                 
+                // 获取所有导航链接，包括下拉菜单中的链接
+                const navLinks = navbarPlaceholder.querySelectorAll('.nav-links a');
+                const dropdownLinks = navbarPlaceholder.querySelectorAll('.dropdown-menu a');
+                
+                // 处理主导航链接
                 navLinks.forEach(link => {
-                    if (link.getAttribute('href').includes(currentPath)) {
+                    const href = link.getAttribute('href');
+                    if (href && href.includes(currentPath)) {
                         link.classList.add('active');
+                    }
+                });
+                
+                // 处理下拉菜单链接
+                let activeDropdown = false;
+                dropdownLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && href.includes(currentPath)) {
+                        link.classList.add('active');
+                        activeDropdown = true;
+                        
+                        // 找到父级下拉菜单并高亮
+                        const parentDropdown = link.closest('.dropdown');
+                        if (parentDropdown) {
+                            const dropdownToggle = parentDropdown.querySelector('.dropdown-toggle');
+                            if (dropdownToggle) {
+                                dropdownToggle.classList.add('active');
+                            }
+                        }
                     }
                 });
                 
