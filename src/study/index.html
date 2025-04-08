@@ -203,11 +203,33 @@
                         <a href="#" class="program-link">敬请期待</a>
                     </ul>
                 </article>
+        </div>
+    </div>
 
+    <!-- 页脚占位符 -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             loadNavbar();
         });
+
+        window.addEventListener('DOMContentLoaded', function() {
+        // 检查导航栏容器
+        const placeholder = document.getElementById('navbar-placeholder');
+            console.log('导航栏占位符:', placeholder);
+            
+            if(placeholder) {
+                // 检查下拉菜单元素
+                const dropdowns = placeholder.querySelectorAll('.dropdown');
+                console.log('找到的下拉菜单数量:', dropdowns.length);
+                
+                // 检查事件监听
+                dropdowns.forEach(dropdown => {
+                    const toggle = dropdown.querySelector('.dropdown-toggle');
+                    console.log('下拉按钮:', toggle);
+                });
+            }
+        });
+
     </script>
 </body>
 </html>
